@@ -1,7 +1,7 @@
 #include <camera_info_manager/camera_info_manager.h>
 #include <cv_bridge/cv_bridge.h>
 #include <dynamic_reconfigure/server.h>
-#include <hardware_interfaces/CameraConfig.h>
+#include <camera/CameraConfig.h>
 #include <image_transport/image_transport.h>
 #include <ros/ros.h>
 #include <sensor_msgs/CameraInfo.h>
@@ -23,8 +23,8 @@ class CameraNode {
   std::string base_topic_;
   double framerate_;
 
-  dynamic_reconfigure::Server<hardware_interfaces::CameraConfig> server_;
-  dynamic_reconfigure::Server<hardware_interfaces::CameraConfig>::CallbackType
+  dynamic_reconfigure::Server<camera::CameraConfig> server_;
+  dynamic_reconfigure::Server<camera::CameraConfig>::CallbackType
       f_;
 
   CameraOV9281 camera_;
@@ -59,7 +59,7 @@ class CameraNode {
     server_.setCallback(f_);
   }
 
-  void ReconfigureCallback(hardware_interfaces::CameraConfig &config,
+  void ReconfigureCallback(camera::CameraConfig &config,
                            uint32_t level) {
     if (camera_.SetExposure(config.Exposure)) {
       ROS_ERROR("Could not set exposure to %d.", config.Exposure);
@@ -81,7 +81,8 @@ class CameraNode {
     bridge_image_.toImageMsg(image_msg_);
     sensor_msgs::CameraInfoPtr info(
         new sensor_msgs::CameraInfo(info_manager_->getCameraInfo()));
-    info->header.stamp = ros::Time::now();
+    info->header.stamp = image_msg_.header.stamp;
+    info->header.frame_id = image_msg_.header.frame_id;
     image_pub_.publish(image_msg_, *info);
     return true;
   }
