@@ -1,7 +1,7 @@
+#include <camera/CameraConfig.h>
 #include <camera_info_manager/camera_info_manager.h>
 #include <cv_bridge/cv_bridge.h>
 #include <dynamic_reconfigure/server.h>
-#include <camera/CameraConfig.h>
 #include <image_transport/image_transport.h>
 #include <ros/ros.h>
 #include <sensor_msgs/CameraInfo.h>
@@ -24,13 +24,13 @@ class CameraNode {
   double framerate_;
 
   dynamic_reconfigure::Server<camera::CameraConfig> server_;
-  dynamic_reconfigure::Server<camera::CameraConfig>::CallbackType
-      f_;
+  dynamic_reconfigure::Server<camera::CameraConfig>::CallbackType f_;
 
   CameraOV9281 camera_;
 
  public:
   CameraNode() : nh_("~") {
+    camera_.SetMode(2);
     image_transport::ImageTransport it(nh_);
 
     // read parameters
@@ -59,8 +59,7 @@ class CameraNode {
     server_.setCallback(f_);
   }
 
-  void ReconfigureCallback(camera::CameraConfig &config,
-                           uint32_t level) {
+  void ReconfigureCallback(camera::CameraConfig &config, uint32_t level) {
     if (camera_.SetExposure(config.Exposure)) {
       ROS_ERROR("Could not set exposure to %d.", config.Exposure);
     }
