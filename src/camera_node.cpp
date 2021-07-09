@@ -80,9 +80,8 @@ class CameraNode {
     bridge_image_.toImageMsg(image_msg_);
     sensor_msgs::CameraInfoPtr info(
         new sensor_msgs::CameraInfo(info_manager_->getCameraInfo()));
-    info->header.stamp = image_msg_.header.stamp;
     info->header.frame_id = image_msg_.header.frame_id;
-    image_pub_.publish(image_msg_, *info);
+    image_pub_.publish(image_msg_, *info, ros::Time::now());
     return true;
   }
 
