@@ -72,11 +72,15 @@ class CameraNode {
 
   bool CaptureAndPublish() {
     cv::Mat *cv_image;
+    cv::Rect roi(camera_.GetWidth() / 8, camera_.GetHeight() / 8,
+                 camera_.GetWdith() * 3 / 4, camera_.GetHeight() * 3 / 4);
     camera_.Capture();
     cv_image = camera_.GetImage();
 
+    cv::Mat cv_cropped = (*cv_image)(roi);
+
     bridge_image_.encoding = "mono8";
-    bridge_image_.image = *cv_image;
+    bridge_image_.image = cv_cropped;
     bridge_image_.toImageMsg(image_msg_);
     sensor_msgs::CameraInfoPtr info(
         new sensor_msgs::CameraInfo(info_manager_->getCameraInfo()));

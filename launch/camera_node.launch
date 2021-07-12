@@ -1,9 +1,10 @@
 <launch>
     <arg name="vehicle_name" />
-    <arg name="camera_info_url" default="file://$(find camera)/config/calib_ov9281_00.yaml" />
+    <arg name="calibration_file" default="$(find camera)/config/calib_ov9281_00.yaml" />
+    <arg name="camera_info_url" value="file://$(arg calibration_file)" />
     <arg name="camera_name" default="vertical_camera" />
     <arg name="camera_frame_id" default="camera_frame" />
-    <arg name="framerate" default="10" />
+    <arg name="framerate" default="20" />
     <arg name="base_topic" default="image_raw" />
 
     <node pkg="camera" type="camera_node" name="$(arg camera_name)">
