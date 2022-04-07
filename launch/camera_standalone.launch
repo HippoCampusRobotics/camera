@@ -5,9 +5,15 @@
     <arg name="camera_frame_id" default="camera_frame" />
     <arg name="framerate" default="10" />
     <arg name="base_topic" default="image_raw" />
+    <arg name="camera_resolution_mode" default="1" doc="Mode 0:1280x800, 1:1280x720, 2:640x400, 3:320x200, 4:160x100"/>
+    <arg name="camera_roi_crop_x" default="0.25" doc="Scaling for symmetric ROI x-cropping from both sides"/>
+    <arg name="camera_roi_crop_y" default="0.25" doc="Scaling for symmetric ROI y-cropping from both sides"/>
 
     <node ns="$(arg vehicle_name)" pkg="camera" type="camera_node" name="$(arg camera_name)">
-
+        <param name="camera_roi_crop_x" value="$(arg camera_roi_crop_x)" />
+        <param name="camera_roi_crop_y" value="$(arg camera_roi_crop_y)" />
+        <param name="camera_resolution_mode" value="$(arg camera_resolution_mode)" />
+        <param name="framerate" value="$(arg framerate)" />
         <param name="camera_name" value="$(arg camera_name)" />
         <param name="camera_frame_id" value="$(arg camera_frame_id)" />
         <param name="camera_info_url" value="$(arg camera_info_url)" />
