@@ -1,0 +1,10 @@
+#!/usr/bin/bash
+
+LIB_DIR="/usr/lib"
+
+for FILE in /opt/vc/lib/*.so
+do
+        BASENAME="$(basename $FILE)"
+        sudo ln -s $FILE "$LIB_DIR/$BASENAME.0"
+done
+
