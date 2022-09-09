@@ -92,7 +92,7 @@ class CameraNode {
 
   bool CaptureAndPublish() {
     cv::Mat *cv_image;
-    cv::Rect roi(camera_.GetWidth() * cam_roi_crop_x_, camera_.GetHeight() * cam_roi_crop_y_,
+    cv::Rect roi(camera_.GetWidth() * (cam_roi_crop_x_/2), camera_.GetHeight() * (cam_roi_crop_y_/2),
                  camera_.GetWidth() * (1-cam_roi_crop_x_), camera_.GetHeight() * (1-cam_roi_crop_y_));  
     
     camera_.Capture();
